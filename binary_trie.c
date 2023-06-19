@@ -4,11 +4,20 @@
 #include "table.c"
 #include "util.c"
 
+
+typedef struct binNode{
+    int hop;
+    Node* left;
+    Node* right;
+} Node;
+
 int main(){
     int tablelength1;
     uint64_t start, end;
     start = rdtsc();
-    struct TABLEENTRY* table = set_table("ipv4/build.txt", &tablelength1);
+    struct TABLEENTRY* table = set_table("ipv4_rrc_all_90build.txt", &tablelength1);
     end = rdtsc();
-    printf("Elapsed clock cycles for building the table: %llu\n", end-start);
+    printf("Build Table: %llu\n", end-start);
+
+
 }
