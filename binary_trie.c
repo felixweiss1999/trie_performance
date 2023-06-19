@@ -14,7 +14,7 @@ typedef struct binNode{
 void insert(Node* root, struct TABLEENTRY* table, int tablelength){
     for(int i = 0; i < tablelength; i++){
         Node* currentNode = root;
-        for(int j = 0; j < table->len; j++){
+        for(int j = 0; j < table[i].len; j++){
             //printf("%d", table[i].ip & ((unsigned int)1 << (32-j)));
             if(table[i].ip & ((unsigned int)1 << (31-j))){ //go right
                 if(currentNode->right == NULL){ //create right child
@@ -38,6 +38,21 @@ void insert(Node* root, struct TABLEENTRY* table, int tablelength){
     }
 }
 
+int lookup(Node* root, int ip, int len){
+    int longestMatch = 0;
+    Node* currentNode = root;
+    int j = 0;
+    while(currentNode != NULL && j <= len){
+        if(currentNode->hop != 0) longestMatch = currentNode->hop;
+        if(ip & (1 << (31 - j++))){
+            currentNode = currentNode->right;
+        } else {
+            currentNode = currentNode->left;
+        }
+    }
+    return longestMatch;
+}
+
 int main(){
     int tablelength1;
     uint64_t start, end;
@@ -45,11 +60,23 @@ int main(){
     struct TABLEENTRY* table = set_table("ipv4_rrc_all_90build.txt", &tablelength1);
     end = rdtsc();
     printf("Build Table: %llu\n", end-start);
+
     Node root = {0, 0, 0};
     start = rdtsc();
     insert(&root, table, tablelength1);
     end = rdtsc();
-    printf("Build Binary Trie: %llu\n", end-start);
-    printf("Average build per Insert: %f\n", ((double)end-start)/(double)tablelength1);
+    printf("Total build clocks: %llu\n", end-start);
+    printf("Average clocks per insert: %f\n", ((double)end-start)/(double)tablelength1);
+    
+    //verify table
+    for(int i = 0; i < tablelength1; i++) if(lookup(&root, table[i].ip, table[i].len) != i+1) printf("Error for i = %d", i);
+    
+    start = rdtsc();
+    for(int i = 0; i < tablelength1; i++) lookup(&root, table[i].ip, table[i].len);
+    end = rdtsc();
+    printf("Total lookup clocks: %llu\n", end-start);
+    printf("Average clocks per lookup: %f", (double)(end-start)/(double)tablelength1);
+
+    
     return 0;
 }
