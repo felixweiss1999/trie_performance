@@ -65,7 +65,7 @@ struct TABLEENTRY* set_table(char *file_name, int* num_entry){
 	while(fgets(string,50,fp)!=NULL){
 		read_table(string,&ip,&len,&nexthop);
 		table[*num_entry].ip=ip;
-		table[*num_entry].nexthop=*num_entry;
+		table[*num_entry].nexthop=(*num_entry) + 1;
 		table[(*num_entry)++].len=len;
 	}
     return table;
