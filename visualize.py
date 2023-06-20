@@ -6,14 +6,14 @@ def plot_frequency_distribution(filename):
     array = np.loadtxt(filename)
     print(np.median(array), np.mean(array))
     # Plot frequency distribution
-    bin_interval = 6
+    bin_interval = 20
     bins = np.arange(0, 3000, bin_interval)
     plt.hist(array, bins=bins, range=(0,5000))
     plt.xlabel('Elapsed Clocks')
     plt.ylabel('Occurrences')
-    plt.title('Binary Trie Elapsed Clocks for Searches (Bucketsize = 5)')
+    plt.title('Binary Trie Elapsed Clocks for Searches (Bucketsize = 20)')
     plt.show()
 
 # Example usage
-filename = 'fourbittrie_clocks.txt'
+filename = 'btrie_clocks.txt'
 plot_frequency_distribution(filename)
