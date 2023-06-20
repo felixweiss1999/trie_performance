@@ -6,7 +6,7 @@ def plot_frequency_distribution(filename):
     array = np.loadtxt(filename)
     print(np.median(array), np.mean(array))
     # Plot frequency distribution
-    bin_interval = 5
+    bin_interval = 6
     bins = np.arange(0, 3000, bin_interval)
     plt.hist(array, bins=bins, range=(0,5000))
     plt.xlabel('Elapsed Clocks')
