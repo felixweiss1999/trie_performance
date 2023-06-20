@@ -15,5 +15,5 @@ def plot_frequency_distribution(filename):
     plt.show()
 
 # Example usage
-filename = 'btrie_clocks.txt'
+filename = 'fourbittrie_clocks.txt'
 plot_frequency_distribution(filename)
